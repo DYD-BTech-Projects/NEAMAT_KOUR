@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Portfolio | University of Jammu Edition</title>
+    
+    <!-- External Libraries for Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        :root {
+            --neon-navy: #001F3F;
+            --neon-blue: #0074D9;
+            --premium-black: #050505;
+            --burgundy: #800020;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 1. TOP PROGRESS BAR */
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0; height: 3px;
+            background: var(--neon-blue);
+            z-index: 3000; width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--premium-black); color: white; overflow-x: hidden; }
+
+        /* GLOBAL COMPONENTS */
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, #001F3F 0%, #050505 100%); }
+        .glass { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 20px; }
+
+        nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; padding: 10px 30px; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; font-size: 0.8rem; opacity: 0.7; transition: 0.3s; text-transform: uppercase; }
+        nav a:hover { opacity: 1; color: var(--neon-blue); }
+
+        section { min-height: 100vh; padding: 100px 10%; display: flex; flex-direction: column; justify-content: center; }
+
+        /* PAGE 1: HERO */
+        .hero-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: center; padding: 60px; }
+        .hero-img-box { background: var(--burgundy); padding: 20px; border-radius: 10px; }
+        .hero-img-box img { width: 100%; display: block; filter: grayscale(100%); border-radius: 5px; }
+        h1 { font-size: 6rem; line-height: 0.9; font-family: serif; text-transform: uppercase; }
+        .outline-text { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.4); }
+
+        /* PAGE 2: BIO */
+        #bio { background: linear-gradient(to right, var(--neon-navy) 40%, var(--burgundy) 100%); }
+        .expertise-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+        .expertise-card { padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+
+        /* PAGE 3: EDU & SKILLS */
+        #edu { background: radial-gradient(circle at top right, var(--neon-navy), var(--premium-black)); }
+        .skill-pill { background: rgba(0, 31, 63, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px 20px; border-radius: 8px; transition: 0.3s; font-size: 0.85rem; }
+        .skill-pill:hover { background: var(--neon-blue); transform: translateY(-3px); }
+
+        /* PAGE 4: PROJECT SLIDER (AS PER REFERENCE IMAGE) */
+        .project-wrapper { padding: 40px 0; display: flex; flex-direction: column; align-items: center; }
+        .project-slider { display: flex; gap: 30px; overflow-x: auto; width: 100%; padding: 40px 5%; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .project-slider::-webkit-scrollbar { display: none; }
+
+        .project-card {
+            min-width: 320px; height: 460px; padding: 25px; scroll-snap-align: center;
+            transition: all 0.5s ease; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .project-slider:hover .project-card { opacity: 0.4; filter: blur(2px); }
+        .project-card:hover { opacity: 1 !important; filter: blur(0) !important; transform: scale(1.05); border-color: var(--neon-blue); }
+
+        .project-header { font-size: 0.7rem; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
+        .project-img-thumb { width: 100%; height: 180px; background: #111; border-radius: 12px; margin: 15px 0; overflow: hidden; }
+
+        /* PAGE 6: RESUME DOWNLOAD */
+        #resume-download { padding: 100px 10%; text-align: center; background: linear-gradient(to bottom, var(--premium-black), var(--neon-navy)); }
+        .download-btn {
+            display: inline-flex; align-items: center; gap: 15px; padding: 18px 45px;
+            border: 2px solid var(--neon-blue); color: white; text-decoration: none;
+            border-radius: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+            transition: 0.4s; margin-top: 25px;
+        }
+        .download-btn:hover { background: var(--neon-blue); box-shadow: 0 0 30px var(--neon-blue); }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+    <div class="bg-animation"></div>
+
+    <nav class="glass">
+        <a href="#home">Home</a>
+        <a href="#bio">About</a>
+        <a href="#edu">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#resume-download">Resume</a>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home">
+        <div class="hero-container glass" data-aos="fade-up">
+            <div class="hero-img-box"><img src="assets/image/photo.jpeg.jpeg" alt="Profile"></div>
+            <div>
+                <h1 class="Neamat Kour">NEAMAT</h1>
+                <h1>KOUR</h1>
+                <p style="color: var(--neon-blue); margin-top: 20px; font-weight: 600; letter-spacing: 2px;">COMPUTER SCIENCE | UNIVERSITY OF JAMMU</p>
+            </div>
+        </div>
+    </section>
+<!-- BIO SECTION -->
+<section id="bio" style="position: relative; overflow: hidden; padding: 100px 0;">
+    <!-- Background "Ghost Text" -->
+    <div style="position: absolute; top: 5%; right: -2%; font-size: 12rem; font-family: serif; opacity: 0.03; font-style: italic; pointer-events: none; white-space: nowrap; font-weight: bold;">
+        Portfolio
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start; position: relative; z-index: 2;" data-aos="fade-up">
+        
+        <!-- IMAGE COLUMN -->
+        <div style="position: relative;">
+            <div class="glass" style="padding: 12px; border-radius: 8px; border-left: 5px solid #800020;">
+                <!-- Updated image source based on your file: photo2.jpg -->
+                <img src="photo2.jpeg.jpeg" alt="Neamat Kours" style="width: 100%; border-radius: 4px; filter: contrast(1.05) brightness(0.95);">
+            </div>
+            
+            <div style="margin-top: 25px; padding-left: 15px; border-left: 1px solid var(--neon-blue);">
+                <p style="font-size: 0.75rem; letter-spacing: 4px; color: var(--neon-blue); text-transform: uppercase; margin: 0;">Jammu, IN</p>
+                <p style="font-size: 0.85rem; opacity: 0.6; margin: 5px 0 0 0;">Computer Science Engineering</p>
+            </div>
+        </div>
+
+        <!-- CONTENT COLUMN -->
+        <div>
+            <h2 style="font-size: 4.5rem; font-family: serif; margin: 0; line-height: 1;">BIO</h2>
+            <div style="width: 80px; height: 3px; background: #800020; margin: 20px 0 40px 0;"></div>
+            
+            <p style="font-size: 1.1rem; line-height: 1.9; opacity: 0.9; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px;">
+                I am a student at the <strong>University of Jammu</strong> currently completing my <strong>minor project</strong>. I am a creator driven by the challenge of merging technical discipline with the high-end, atmospheric aesthetics of artists like <strong>Chase Atlantic</strong> and <strong>Maluma</strong>.
+            </p>
+
+            <!-- Information Cards -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                
+                <div class="glass" style="padding: 25px; border-top: 2px solid var(--neon-blue);">
+                    <h4 style="font-size: 0.75rem; letter-spacing: 2px; color: var(--neon-blue); margin-bottom: 15px; text-transform: uppercase;">Creative Soul</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.8; line-height: 1.7; margin: 0;">
+                        Passionate about <strong>Creative Writing</strong> and the intricate ritual of <strong>coffee brewing</strong>.
+                    </p>
+                </div>
+
+                <div class="glass" style="padding: 25px; border-top: 2px solid #800020;">
+                    <h4 style="font-size: 0.75rem; letter-spacing: 2px; color: #800020; margin-bottom: 15px; text-transform: uppercase;">Core Mission</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.8; line-height: 1.7; margin: 0;">
+                        Bridging software and community safety through <strong>Flood Monitoring</strong> initiatives.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ACADEMIC & SKILLS SECTION -->
+<section id="edu" style="padding: 120px 0; position: relative; overflow: hidden; background: #050a10;">
+    
+    <!-- Background "Learning" Texture -->
+    <div style="position: absolute; bottom: -5%; left: 5%; font-size: 15rem; font-family: serif; opacity: 0.05; font-weight: bold; pointer-events: none; z-index: 1; text-transform: uppercase;">
+        Learn
+    </div>
+
+    <!-- MAIN CONTAINER: This keeps everything centered and away from the corners -->
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2;">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start;">
+            
+            <!-- EDUCATION COLUMN -->
+            <div data-aos="fade-right">
+                <h2 style="font-size: 3rem; font-family: serif; margin-bottom: 50px; letter-spacing: 2px;">EDUCATION</h2>
+                
+                <div style="border-left: 2px solid #800020; padding-left: 35px; position: relative; margin-left: 10px;">
+                    
+                    <!-- University of Jammu -->
+                    <div style="margin-bottom: 60px; position: relative;">
+                        <div style="position: absolute; left: -42px; top: 5px; width: 12px; height: 12px; background: #0074d9; border-radius: 50%; box-shadow: 0 0 15px #0074d9;"></div>
+                        <span style="font-size: 0.75rem; letter-spacing: 2px; color: #0074d9; font-weight: bold;">2023 — 2027</span>
+                        <h3 style="font-size: 1.6rem; margin: 10px 0;">University of Jammu</h3>
+                        <p style="font-size: 1rem; opacity: 0.9;">B.Tech in Information Technology</p>
+                        <p style="font-size: 0.85rem; opacity: 0.5; margin-top: 15px; line-height: 1.6;">
+                            Focusing on core computing principles, database management, and software architecture.
+                        </p>
+                    </div>
+
+                    <!-- Heritage School -->
+                    <div style="position: relative;">
+                        <div style="position: absolute; left: -42px; top: 5px; width: 12px; height: 12px; background: #800020; border-radius: 50%;"></div>
+                        <span style="font-size: 0.75rem; letter-spacing: 2px; opacity: 0.6;">CLASS OF 2023</span>
+                        <h3 style="font-size: 1.6rem; margin: 10px 0;">Heritage School, Jammu</h3>
+                        <p style="font-size: 1rem; opacity: 0.7;">High School Graduation</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TECH STACK COLUMN -->
+            <div data-aos="fade-left">
+                <h2 style="font-size: 3rem; font-family: serif; margin-bottom: 50px; letter-spacing: 2px;">TECH STACK</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <!-- Skill Card: HTML -->
+                    <div class="glass" style="padding: 25px; border-right: 3px solid #0074d9; display: flex; align-items: center; justify-content: center; height: 80px;">
+                        <span style="font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;">HTML / CSS</span>
+                    </div>
+                    <!-- Skill Card: Python -->
+                    <div class="glass" style="padding: 25px; border-right: 3px solid #0074d9; display: flex; align-items: center; justify-content: center; height: 80px;">
+                        <span style="font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;">PYTHON</span>
+                    </div>
+                    <!-- Skill Card: Java -->
+                    <div class="glass" style="padding: 25px; border-right: 3px solid #800020; display: flex; align-items: center; justify-content: center; height: 80px;">
+                        <span style="font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;">JAVA</span>
+                    </div>
+                    <!-- Skill Card: C++ -->
+                    <div class="glass" style="padding: 25px; border-right: 3px solid #800020; display: flex; align-items: center; justify-content: center; height: 80px;">
+                        <span style="font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;">C++</span>
+                    </div>
+                    <!-- Skill Card: React -->
+                    <div class="glass" style="padding: 25px; border-right: 3px solid #fff; display: flex; align-items: center; justify-content: center; height: 80px;">
+                        <span style="font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;">REACT.JS</span>
+                    </div>
+                    <!-- Skill Card: Node -->
+                    <div class="glass" style="padding: 25px; border-right: 3px solid #fff; display: flex; align-items: center; justify-content: center; height: 80px;">
+                        <span style="font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;">NODE.JS</span>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- PROJECTS SECTION -->
+<section id="projects" style="padding: 120px 0; background: #050a10; overflow: hidden; position: relative;">
+    
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 40px; margin-bottom: 50px;">
+        <h2 style="font-size: 3.5rem; font-family: serif; letter-spacing: 3px;">SELECTED WORKS</h2>
+        <p style="opacity: 0.5; letter-spacing: 1px;">Horizontal scroll to explore project details.</p>
+    </div>
+
+    <!-- HORIZONTAL SCROLLING CONTAINER -->
+    <div id="project-tray" style="display: flex; overflow-x: auto; gap: 30px; padding: 20px 50px 80px 50px; scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
+        
+        <!-- PROJECT CARDS -->
+        <div class="project-card glass" onclick="openProject('cdr')" style="min-width: 400px; cursor: pointer; border-radius: 24px; overflow: hidden; flex-shrink: 0; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            <div style="height: 250px; background: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=600') center/cover;"></div>
+            <div style="padding: 35px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #0074d9; font-size: 0.7rem; font-weight: bold; letter-spacing: 3px;">01 / DATA ARCHITECTURE</span>
+                <h3 style="font-size: 1.8rem; margin: 15px 0; font-family: serif;">CDR INTEL</h3>
+                <p style="font-size: 0.9rem; opacity: 0.6; line-height: 1.6;">Advanced Call Detail Record analysis and intelligence system for pattern recognition.</p>
+            </div>
+        </div>
+
+        <div class="project-card glass" onclick="openProject('bhaderwah')" style="min-width: 400px; cursor: pointer; border-radius: 24px; overflow: hidden; flex-shrink: 0; transition: 0.5s;">
+            <div style="height: 250px; background: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=600') center/cover;"></div>
+            <div style="padding: 35px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #800020; font-size: 0.7rem; font-weight: bold; letter-spacing: 3px;">02 / WEB PLATFORM</span>
+                <h3 style="font-size: 1.8rem; margin: 15px 0; font-family: serif;">BHADERWAH E-COM</h3>
+                <p style="font-size: 0.9rem; opacity: 0.6; line-height: 1.6;">Regional commerce solution supporting local trade in the Bhaderwah valley.</p>
+            </div>
+        </div>
+
+        <div class="project-card glass" onclick="openProject('msd')" style="min-width: 400px; cursor: pointer; border-radius: 24px; overflow: hidden; flex-shrink: 0; transition: 0.5s;">
+            <div style="height: 250px; background: url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=600') center/cover;"></div>
+            <div style="padding: 35px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #fff; opacity: 0.5; font-size: 0.7rem; font-weight: bold; letter-spacing: 3px;">03 / DISASTER MGMT</span>
+                <h3 style="font-size: 1.8rem; margin: 15px 0; font-family: serif;">MSD: MAHA SAILAB</h3>
+                <p style="font-size: 0.9rem; opacity: 0.6; line-height: 1.6;">Flood monitoring and simulation logic for the Jammu region river systems.</p>
+            </div>
+        </div>
+
+        <div class="project-card glass" onclick="openProject('portfolio')" style="min-width: 400px; cursor: pointer; border-radius: 24px; overflow: hidden; flex-shrink: 0; transition: 0.5s;">
+            <div style="height: 250px; background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600') center/cover;"></div>
+            <div style="padding: 35px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #0074d9; font-size: 0.7rem; font-weight: bold; letter-spacing: 3px;">04 / MINOR PROJECT</span>
+                <h3 style="font-size: 1.8rem; margin: 15px 0; font-family: serif;">PORTFOLIO V1</h3>
+                <p style="font-size: 0.9rem; opacity: 0.6; line-height: 1.6;">Personalized hub showcasing B.Tech Information Technology curriculum works.</p>
+            </div>
+        </div>
+
+        <div class="project-card glass" onclick="openProject('eeg')" style="min-width: 400px; cursor: pointer; border-radius: 24px; overflow: hidden; flex-shrink: 0; transition: 0.5s;">
+            <div style="height: 250px; background: url('https://images.unsplash.com/photo-1551288049-bbbda5366a71?q=80&w=600') center/cover;"></div>
+            <div style="padding: 35px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #800020; font-size: 0.7rem; font-weight: bold; letter-spacing: 3px;">05 / RESEARCH</span>
+                <h3 style="font-size: 1.8rem; margin: 15px 0; font-family: serif;">EEG ANALYSIS</h3>
+                <p style="font-size: 0.9rem; opacity: 0.6; line-height: 1.6;">Signal processing for identifying biological foundations of behavior.</p>
+            </div>
+        </div>
+
+        <div class="project-card glass" onclick="openProject('youth')" style="min-width: 400px; cursor: pointer; border-radius: 24px; overflow: hidden; flex-shrink: 0; transition: 0.5s;">
+            <div style="height: 250px; background: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600') center/cover;"></div>
+            <div style="padding: 35px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #fff; opacity: 0.5; font-size: 0.7rem; font-weight: bold; letter-spacing: 3px;">06 / SOCIAL IMPACT</span>
+                <h3 style="font-size: 1.8rem; margin: 15px 0; font-family: serif;">YOUTH4ELDERS</h3>
+                <p style="font-size: 0.9rem; opacity: 0.6; line-height: 1.6;">Community platform connecting student volunteers with the elderly.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLEAN MODAL OVERLAY -->
+    <div id="projectModal" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.95); z-index: 2000; backdrop-filter: blur(20px); align-items: center; justify-content: center; padding: 20px;">
+        <div class="glass" style="max-width: 700px; width: 100%; padding: 60px; border: 1px solid rgba(255,255,255,0.1); position: relative; border-radius: 30px;">
+            <button onclick="closeProject()" style="position: absolute; top: 30px; right: 30px; background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; opacity: 0.5;">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const projectDetails = {
+        cdr: {
+            title: "CDR INTEL",
+            tag: "Data Intelligence",
+            desc: "This system is engineered to parse and analyze massive datasets of Call Detail Records (CDR) using **Node.js** and **PostgreSQL**. It identifies frequency of contact and communication patterns to provide intelligence on geolocations and network behavior."
+        },
+        bhaderwah: {
+            title: "BHADERWAH E-COMMERCE",
+            tag: "Regional Marketplace",
+            desc: "A full-stack commerce platform built with **React** and **Tailwind CSS** to empower local artisans in Bhaderwah. It features dynamic inventory management and a localized delivery logistics framework designed for regional trade."
+        },
+        msd: {
+            title: "MAHA SAILAB DETECTOR (MSD)",
+            tag: "Disaster Monitoring",
+            desc: "A critical safety initiative for the Jammu region, integrating **IoT sensor logic** with **Unity-based VR simulations**. It serves as a training ground for flood survival and river management."
+        },
+        portfolio: {
+            title: "PORTFOLIO SETUP",
+            tag: "B.Tech Minor Project",
+            desc: "My capstone minor project at the University of Jammu, developed using **React.js** and **Framer Motion**. It utilizes a 'cyber-noir' aesthetic and glassmorphism to showcase academic and technical milestones."
+        },
+        eeg: {
+            title: "EEG: EPILEPTIC SEIZURES",
+            tag: "Biomedical Research",
+            desc: "A study on the biological foundations of behavior using **Python** for signal processing. This project processes EEG data to identify neurological patterns associated with seizure onset."
+        },
+        youth: {
+            title: "YOUTH4ELDERS",
+            tag: "Community Portal",
+            desc: "A social impact platform connecting student volunteers with the elderly in Jammu. It provides a digital interface for coordination, built with **HTML5** and **JavaScript** to bridge generational gaps."
+        }
+    };
+
+    function openProject(key) {
+        const modal = document.getElementById('projectModal');
+        const content = document.getElementById('modalContent');
+        const data = projectDetails[key];
+        content.innerHTML = `
+            <span style="text-transform: uppercase; letter-spacing: 4px; color: #0074d9; font-size: 0.8rem; font-weight: bold;">${data.tag}</span>
+            <h2 style="font-family: serif; font-size: 3rem; margin: 20px 0; color: white;">${data.title}</h2>
+            <div style="width: 60px; height: 4px; background: #800020; margin-bottom: 40px;"></div>
+            <p style="line-height: 1.8; opacity: 0.8; font-size: 1.1rem; margin-bottom: 0;">${data.desc}</p>
+        `;
+        modal.style.display = 'flex';
+    }
+
+    function closeProject() {
+        document.getElementById('projectModal').style.display = 'none';
+    }
+</script>
+<style>
+    /* RESUME SECTION STYLING */
+    #resume-download {
+        background: linear-gradient(to bottom, var(--premium-black), var(--neon-navy));
+        padding: 100px 10%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .resume-container {
+        max-width: 800px;
+        width: 100%;
+        padding: 60px;
+        border: 1px solid rgba(0, 116, 217, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Decorative glow effect behind the button */
+    .resume-container::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 200px;
+        height: 200px;
+        background: var(--neon-blue);
+        filter: blur(120px);
+        opacity: 0.15;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+    }
+
+    .download-btn {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+        background: transparent;
+        color: white;
+        border: 2px solid var(--neon-blue);
+        padding: 20px 45px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .download-btn:hover {
+        background: var(--neon-blue);
+        box-shadow: 0 0 40px rgba(0, 116, 217, 0.6);
+        transform: scale(1.05);
+        color: white;
+    }
+
+    .download-btn i {
+        font-size: 1.3rem;
+    }
+
+    .resume-text {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 30px;
+        opacity: 0.8;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+</style>
+
+<!-- SECTION 6: RESUME DOWNLOAD -->
+<section id="resume-download">
+    <div class="resume-container glass" data-aos="zoom-in">
+        <h2 style="font-family: serif; font-size: 3rem; margin-bottom: 15px; letter-spacing: 2px;">READY TO COLLABORATE?</h2>
+        <p class="resume-text">Download my full technical CV for a detailed look at my academic projects and skill set.</p>
+        
+        <!-- Replace 'my-resume.pdf' with your actual file name -->
+        <a href="Your_Resume_Neamat.pdf" download class="download-btn">
+            <span>Download Resume</span>
+            <span style="font-size: 1.5rem;">↓</span>
+        </a>
+        
+        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.4; letter-spacing: 2px;">
+            © 2026 | UNIVERSITY OF JAMMU | COMPUTER SCIENCE
+        </p>
+    </div>
+</section>
+<!-- CONTACT SECTION -->
+<section id="contact" style="padding: 120px 0; background: #050a10; position: relative; overflow: hidden;">
+    
+    <!-- Subtle Background Glow -->
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(128,0,32,0.1) 0%, transparent 70%); pointer-events: none;"></div>
+
+    <div style="max-width: 1000px; margin: 0 auto; padding: 0 40px; text-align: center; position: relative; z-index: 2;">
+        <h2 style="font-size: 3.5rem; font-family: serif; letter-spacing: 5px; margin-bottom: 20px;">GET IN TOUCH</h2>
+        <div style="width: 50px; height: 2px; background: #800020; margin: 0 auto 60px auto;"></div>
+
+        <!-- CONTACT GRID -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; justify-items: center;">
+            
+            <!-- Email -->
+            <a href="mailto:your-email@example.com" style="text-decoration: none; color: white; transition: 0.3s;" class="contact-item">
+                <div style="font-size: 2rem; margin-bottom: 15px; color: #0074d9;"><i class="fas fa-envelope"></i></div>
+                <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.5; margin-bottom: 5px;">EMAIL</p>
+                <p style="font-weight: bold; font-size: 0.9rem;">kourneamat@gmail.com</p>
+            </a>
+
+            <!-- LinkedIn -->
+            <a href="https://linkedin.com/in/yourprofile" target="_blank" style="text-decoration: none; color: white; transition: 0.3s;" class="contact-item">
+                <div style="font-size: 2rem; margin-bottom: 15px; color: #0074d9;"><i class="fab fa-linkedin"></i></div>
+                <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.5; margin-bottom: 5px;">LINKEDIN</p>
+                <p style="font-weight: bold; font-size: 0.9rem;">Neamat Kour</p>
+            </a>
+
+            <!-- GitHub -->
+            <a href="https://github.com/yourusername" target="_blank" style="text-decoration: none; color: white; transition: 0.3s;" class="contact-item">
+                <div style="font-size: 2rem; margin-bottom: 15px; color: #fff;"><i class="fab fa-github"></i></div>
+                <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.5; margin-bottom: 5px;">GITHUB</p>
+                <p style="font-weight: bold; font-size: 0.9rem;">BUILDN60</p>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://instagram.com/yourhandle" target="_blank" style="text-decoration: none; color: white; transition: 0.3s;" class="contact-item">
+                <div style="font-size: 2rem; margin-bottom: 15px; color: #800020;"><i class="fab fa-instagram"></i></div>
+                <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.5; margin-bottom: 5px;">INSTAGRAM</p>
+                <p style="font-weight: bold; font-size: 0.9rem;">neamatkour2004</p>
+            </a>
+
+            <!-- Phone -->
+            <div style="color: white;" class="contact-item">
+                <div style="font-size: 2rem; margin-bottom: 15px; color: #800020;"><i class="fas fa-phone"></i></div>
+                <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.5; margin-bottom: 5px;">PHONE</p>
+                <p style="font-weight: bold; font-size: 0.9rem;">+91 87130 49855</p>
+            </div>
+
+        </div>
+
+        <!-- Footer Note -->
+        <p style="margin-top: 100px; font-size: 0.7rem; opacity: 0.3; letter-spacing: 2px;">
+            DESIGNED BY B.TECH IT MINOR PROJECT DEPT / 2026
+        </p>
+    </div>
+</section>
+
+<!-- Include FontAwesome in your <head> for the icons to render -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+
+<style>
+    .contact-item:hover {
+        transform: translateY(-5px);
+        filter: drop-shadow(0 0 10px rgba(0, 116, 217, 0.4));
+    }
+</style>
+<!-- Initialize AOS to reveal your content -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true,
+    offset: 100
+  });
+</script>
+</body>
+</html>
